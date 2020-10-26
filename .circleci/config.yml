@@ -135,7 +135,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project= UdaPeople \
-              --stack-name "fudapeople-frontend${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "udapeople-frontend${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
@@ -148,39 +148,6 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      
-
-  configure-infrastructure:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-            fingerprints: ["72:4e:b5:c5:00:41:94:94:68:79:12:f1:39:3e:15:9f"]
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update tar gzip ansible nodejs npm curl
-            pip install awscli
-      - run:
-          name: configure infrastracture
-          command: |
-            echo ENVIROMENT=production > "backend/.env"
-            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
-            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
-            cat backend/.env
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
       
 
 
@@ -207,8 +174,8 @@ workflows:
           filters:
             branches:
               only: [test-feature-branch]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+#      - configure-infrastructure:
+#          requires: [deploy-infrastructure]
 #      - run-migrations:
 #          requires: [configure-infrastructure]
 #      - deploy-frontend:
