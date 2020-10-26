@@ -1,5 +1,18 @@
 version: 2.1
 
+commands:
+  destroy-environment:
+    description: Destroy backend and frontend cloudformation stacks given a workflow ID.
+    parameters:
+      workflow_id:
+        type: string      
+    steps:
+       - run:
+          name: Destroy environment << parameters.workflow_id >>
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
+
 jobs:
   build-frontend:
     docker:
@@ -93,14 +106,47 @@ jobs:
       - restore_cache:
           keys: [scan-backend]
       - run:
-          name: Back-end anzlyze
+          name: Back-end analyze
           command: |
             cd backend
             npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
           key: scan-backend
-        
+
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - restore
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project= UdaPeople \
+              --stack-name "udapeople-backend${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project= UdaPeople \
+              --stack-name "fudapeople-frontend${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text >> .circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
 
 
 workflows:
@@ -116,11 +162,11 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-#      - deploy-infrastructure:
-#          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-#          filters:
-#            branches:
-#              only: [test-feature-branch]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
 #      - configure-infrastructure:
 #          requires: [deploy-infrastructure]
 #      - run-migrations:
