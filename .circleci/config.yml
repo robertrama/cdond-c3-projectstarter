@@ -77,11 +77,10 @@ jobs:
       - restore_cache:
           keys: [scan-frontend]
       - run:
-          name: Front-end scan
+          name: Front-end analyze
           command: |
             cd frontend
-            npm install
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [frontend/node_modules]
           key: scan-frontend
@@ -94,11 +93,10 @@ jobs:
       - restore_cache:
           keys: [scan-backend]
       - run:
-          name: Back-end scan
+          name: Back-end anzlyze
           command: |
             cd backend
-            npm install
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
           key: scan-backend
