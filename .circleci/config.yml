@@ -177,7 +177,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
 
- run-migrations:
+  run-migrations:
     docker:
       - image: circleci/node:13.8.0
     steps:
