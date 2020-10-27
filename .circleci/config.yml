@@ -159,9 +159,9 @@ jobs:
           fingerprints: ["72:4e:b5:c5:00:41:94:94:68:79:12:f1:39:3e:15:9f"]
       - run:
           name: install dependencies
-          command: |
+          command: 
             apk add --update ansible
-       - run:
+      - run:
           name: Configure server
           command: |
             echo ENVIROMENT=production > "backend/.env"
@@ -176,7 +176,7 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-       - destroy-environment
+      - destroy-environment
           
           
 
