@@ -149,7 +149,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
 
-  configure-infrastracture:
+  configure-infrastructure:
     docker:
       - image: python3.7-alpine3.11
     steps:
