@@ -222,9 +222,9 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-            command: |
-              sudo apt-get install tar gzip ansible nodejs npm
-              pip install awscli
+          command: |
+            sudo apt-get install tar gzip ansible nodejs npm
+            pip install awscli
       - run:
           name: Get backend url
           command: |
