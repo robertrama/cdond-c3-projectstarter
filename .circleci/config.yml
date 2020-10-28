@@ -209,9 +209,7 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt            
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID:0:7}"  --request PUT \
-              --data $( grep -c "No migrations are pending" migrations.txt ) \
-              https://api.memstash.io/values/migration_completion
+            curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
             cat migrations.txt
 
 
