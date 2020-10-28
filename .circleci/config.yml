@@ -209,13 +209,6 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
-      - run:
-          name: Send migration results to memstash
-          command: |
-            if grep -q "success." ~/backend/migrations.txt
-            then
-              curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
-            fi
 
 
   deploy-frontend:
