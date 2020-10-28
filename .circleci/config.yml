@@ -203,15 +203,19 @@ jobs:
     steps:
       - checkout
       - run:
-          name: run migrations and save
+          name: run migrations 
           command: |
             cd backend
-            npm i
+            npm install
             npm audit fix --audit-level=critical --force
-            npm run migrations > migrations.txt            
-            curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
-            cat migrations.txt
-
+            npm run migrations > migrations.txt
+      - run:
+          name: Send migration results to memstash
+          command: |
+            if grep -q "success." ~/backend/migrations.txt
+            then
+              curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
+            fi
 
 
   deploy-frontend:
