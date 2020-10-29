@@ -207,6 +207,7 @@ jobs:
           command: |
             cd backend
             npm install
+            npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
 
@@ -239,9 +240,7 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --delete
 
-          
-          
-
+        
 
       
 
