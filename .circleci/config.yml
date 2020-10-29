@@ -15,9 +15,6 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      workflow_id:
-        type: string
     steps:
       - run:
           name: Revert migrations
@@ -212,6 +209,7 @@ jobs:
               curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
             cat migrations.txt 
       - revert-migrations
+          
 
   deploy-frontend:
     docker:
