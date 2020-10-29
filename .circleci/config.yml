@@ -22,7 +22,13 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            ##
+            success_migration=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key)
+            if ((success_migration == 1 ))
+            then
+              cd backend
+              npm install
+              npm run migration:revert
+            fi
 
 
 jobs:
@@ -205,6 +211,7 @@ jobs:
             npm run migrations > migrations.txt
               curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
             cat migrations.txt 
+      - revert-migrations
 
   deploy-frontend:
     docker:
