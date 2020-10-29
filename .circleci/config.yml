@@ -22,15 +22,7 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            success=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/)
-            echo ${success}
-            if [[ ${success} == 1 ]]
-            then
-              cd backend
-              npm install
-              npm run migrations:revert
-            fi
-
+            ##
 
 
 jobs:
@@ -160,7 +152,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
@@ -181,19 +173,10 @@ jobs:
           name: install dependencies
           command: 
             apk add --update ansible
+            pip install awscli
       - run:
           name: Configure server
           command: |
-            echo ENVIROMENT=production > "backend/.env"
-            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
-            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
 
