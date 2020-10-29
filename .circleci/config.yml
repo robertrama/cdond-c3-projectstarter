@@ -200,6 +200,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run: yum -y install tar gzip.
       - run:
           name: run and save migration 
           command: |
@@ -217,7 +218,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: yum -y install tar gzip
       - run:
           name: Install dependencies
           command: |
@@ -249,7 +249,6 @@ jobs:
       - image: circleci/python:3.8.2
     steps:
       - checkout
-      - run: yum -y install tar gzip
       - add_ssh_keys:
           fingerprints: ["72:4e:b5:c5:00:41:94:94:68:79:12:f1:39:3e:15:9f"]
       - run:
@@ -287,12 +286,12 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      - run-migrations
+#          requires: [configure-infrastructure]
+      - deploy-frontend
+#          requires: [run-migrations]
+      - deploy-backend
+#          requires: [run-migrations]
 #      - smoke-test:
 #          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
