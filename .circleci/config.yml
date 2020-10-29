@@ -211,7 +211,6 @@ jobs:
               curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
             cat migrations.txt 
           
-
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
@@ -261,11 +260,6 @@ jobs:
           command: |
             sudo python -m pip install ansible
       - run:
-          command: |
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-            yum -y install nodejs
-            yum -y install tar gzip
-      - run:
           name: deploy backend
           command: |
             tar -C backend -czvf artifact.tar.gz .
@@ -296,7 +290,7 @@ workflows:
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
-          requires: [run-migrations]
+          requires: [run-migrations, deploy-frontend]
 #      - smoke-test:
 #          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
