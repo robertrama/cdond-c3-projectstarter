@@ -254,6 +254,10 @@ jobs:
             sudo apt update
             sudo apt install rsync
       - run:
+          name: install ansible
+          command: |
+            sudo python -m pip install ansible
+      - run:
           name: deploy backend
           command: |
             cd .circleci/ansible
