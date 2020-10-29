@@ -172,8 +172,7 @@ jobs:
       - run:
           name: install dependencies
           command: 
-            sudo apt-get install tar gzip ansible nodejs npm
-            pip install awscli
+            sudo python -m pip install ansible
       - run:
           name: Configure server
           command: |
@@ -190,19 +189,19 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
 
-  run-migrations:
+#  run-migrations:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
-          name: run migrations 
-          command: |
-            cd backend
-            npm install
-            npm i
-            npm audit fix --audit-level=critical --force
-            npm run migrations > migrations.txt
+#          name: run migrations 
+#          command: |
+#            cd backend
+#            npm install
+#            npm i
+#            npm audit fix --audit-level=critical --force
+#            npm run migrations > migrations.txt
 
 
   deploy-frontend:
@@ -211,10 +210,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get install tar gzip ansible nodejs npm
-            pip install awscli
+          name: install dependencies
+          command: 
+            apk add --update ansible
       - run:
           name: Get backend url
           command: |
