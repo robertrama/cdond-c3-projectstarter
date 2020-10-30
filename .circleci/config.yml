@@ -238,7 +238,7 @@ jobs:
             npm install
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 sync . "s3://udapeople-kk1j287dhjppmz331" --delete
+            aws s3 sync . s3://udapeople-kk1j287dhjppmz331 --delete
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations
