@@ -137,7 +137,7 @@ jobs:
     steps:
       - checkout
       - run: yum -y install tar gzip
-      - run: apk add --update openssh-client git
+      - run: apt-get update && apt-get install -y openssh-client git
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -161,6 +161,7 @@ jobs:
               --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
+              cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
