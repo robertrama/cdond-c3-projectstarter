@@ -7,7 +7,6 @@ commands:
       workflow_id:
         type: string      
     steps:
-      - checkout
       - run:
           name: Destroy environment << parameters.workflow_id >>
           command: |
@@ -139,6 +138,7 @@ jobs:
     steps:
       - checkout
       - run: yum -y install tar gzip
+      - run: apk add --update openssh-client git
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -161,12 +161,12 @@ jobs:
             aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> cdond-c3-projectstarter/.circleci/ansible/inventory.txt
-              cat cdond-c3-projectstarter/.circleci/ansible/inventory.txt
+              --output text >> .circleci/ansible/inventory.txt
+              cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - cdond-c3-projectstarter/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
