@@ -18,7 +18,6 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
-      - checkout
       - run:
           name: Revert migrations
           command: |
@@ -138,7 +137,7 @@ jobs:
     steps:
       - checkout
       - run: yum -y install tar gzip
-      - run: apk add --update openssh-client git
+      - run: apt-get update && apt-get install -y openssh-client git
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -320,8 +319,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - deploy-infrastructure
+#          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
