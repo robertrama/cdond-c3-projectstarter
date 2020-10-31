@@ -137,7 +137,6 @@ jobs:
     steps:
       - checkout
       - run: yum -y install tar gzip
-      - run: apt-get update && apt-get install -y openssh-client git
       - run:
           name: Ensure back-end infrastructure exists
           command: |
