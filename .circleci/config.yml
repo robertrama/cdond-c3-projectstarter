@@ -290,11 +290,11 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            curl "http://${API_URL}:3030/api/status"      
+            curl http://${API_URL}:3030/api/status     
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-kk1j287dhjppmz331.s3-website-us-west-2.amazonaws.com/#/employees"            
+            URL="http://udapeople-kk1j287dhjppmz331.s3-website-us-west-2.amazonaws.com"            
             if curl -s ${URL} | grep "Welcome"
             then
               return 1
