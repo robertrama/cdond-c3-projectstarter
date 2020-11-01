@@ -28,8 +28,6 @@ commands:
               cd ~/project/backend
               npm install
               npm run migration:revert
-            else 
-              echo "error"  
             fi
           when: on_fail
 
@@ -249,7 +247,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/python:3.8.2
+      - image: amazon/aws-cli
     steps:
       - checkout
       - add_ssh_keys:
@@ -332,8 +330,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+      - smoke-test
+#          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
 #          requires: [smoke-test]
 #      - cleanup:
