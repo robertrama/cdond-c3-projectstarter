@@ -27,7 +27,6 @@ commands:
             then
               cd backend
               npm install
-              npm audit fix --force
               npm run migration:revert
             fi
           when: on_fail
