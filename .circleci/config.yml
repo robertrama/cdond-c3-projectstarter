@@ -287,12 +287,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             echo "${BACKEND_IP}"
-            curl "http://${BACKEND_IP}:3030/api/status"    
-#      - run:
-#          name: Backend smoke test.
-#          command: |
-#            echo "${API_URL}"
-#            curl "${API_URL}:3030/api/status"     
+            curl "http://${BACKEND_IP}:3030/api/status"      
       - run:
           name: Frontend smoke test.
           command: |
@@ -330,8 +325,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test
-#          requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
 #          requires: [smoke-test]
 #      - cleanup:
