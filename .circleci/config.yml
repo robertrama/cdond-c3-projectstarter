@@ -12,7 +12,7 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
-            aws s3 rb s3://udapeople-$OLD_WORKFLOW_ID:0:7} --force
+            aws s3 rb s3://udapeople-${OLD_WORKFLOW_ID:0:7} --force
           when: on_fail
 
 
