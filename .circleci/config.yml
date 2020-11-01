@@ -23,11 +23,13 @@ commands:
           name: Revert migrations
           command: |
             success_migration=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key)
-            if (${success_migration} -eq 1 )
-            then
+            if [$success_migration=="1"]
+            then 
               cd backend
               npm install
               npm run migration:revert
+            else 
+              echo "Do nothing" 
             fi
           when: on_fail
 
@@ -330,8 +332,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+      - smoke-test
+#          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
 #          requires: [smoke-test]
 #      - cleanup:
