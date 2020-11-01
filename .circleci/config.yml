@@ -247,7 +247,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/python:3.8.2
     steps:
       - checkout
       - add_ssh_keys:
