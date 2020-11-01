@@ -18,15 +18,19 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
+    when: on_fail
     steps:
       - run:
           name: Revert migrations
           command: |
-            curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key
-            cd backend
-            npm install
-            npm audit fix --force
-            npm run migration:revert
+            success_migration=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key)
+            if ((success_migrations== 1));
+            then
+              cd backend
+              npm install
+              npm audit fix --force
+              npm run migration:revert
+            fi
           when: on_fail
 
 jobs:
