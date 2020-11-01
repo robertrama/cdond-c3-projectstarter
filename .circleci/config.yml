@@ -18,11 +18,14 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      workflow_id:
+        type: string 
     steps:
       - run:
           name: Revert migrations
           command: |
-            success_migration=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key)
+            success_migration=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key<< parameters.workflow_id >>)
             if ((success_migrations== true));
             then
               cd backend
@@ -210,7 +213,7 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
-              curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key
+              curl -H "Content-Type: text/plain" -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request PUT --data "" https://api.memstash.io/values/migration_key${CIRCLE_WORKFLOW_ID:0:7}
             cat migrations.txt 
           
   deploy-frontend:
