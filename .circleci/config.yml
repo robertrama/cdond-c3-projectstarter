@@ -25,9 +25,9 @@ commands:
             SUCCESS=$(curl -H "token: 17d9957b-8957-41b9-a070-529937a10e86" --request GET https://api.memstash.io/values/migration_key)
             if (( $SUCCESS == 1 ));
             then
-              cd ~/project/backend
-              npm install
-              npm run migration:revert
+            cd ~/project/backend
+            npm install
+            npm run migration:revert
             fi
           when: on_fail
 
@@ -271,7 +271,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: circleci/python:3.8.2
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run:
