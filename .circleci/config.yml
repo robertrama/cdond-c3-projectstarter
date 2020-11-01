@@ -279,7 +279,7 @@ jobs:
           command: |
             apk add --update curl nodejs npm
             pip install awscli
-            sudo apt-get install libcurl4-openssl-dev
+            sudo pip install pycurl
       - run:
           name: backend url
           command: |
