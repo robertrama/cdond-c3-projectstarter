@@ -277,8 +277,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl nodejs npm
-            pip install awscli
-            pip install pycurl
+            pip install awsclix
       - run:
           name: backend url
           command: |
@@ -291,7 +290,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            echo ${API_URL}/api/status
+            echo ${API_URL}
             curl ${API_URL}/api/status     
       - run:
           name: Frontend smoke test.
@@ -330,8 +329,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test
-#          requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
 #          requires: [smoke-test]
 #      - cleanup:
