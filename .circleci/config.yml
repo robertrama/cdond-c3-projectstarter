@@ -226,7 +226,6 @@ jobs:
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
             yum -y install tar gzip
-      - run:
       - attach_workspace:
           at: ~/
       - run:    
