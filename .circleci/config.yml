@@ -263,7 +263,6 @@ jobs:
           command: |
             apk add --update tar gzip ansible nodejs npm
             pip install awscli
-            apt install -y rsync
       - run:
           name: deploy backend
           command: |
