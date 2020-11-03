@@ -19,3 +19,15 @@
   shell: pm2 start npm -- run "start:dev"
   args:
     chdir: /home/ubuntu/backend
+
+- name: "run migrations again"
+  shell: |
+    cd /home/ubuntu/backend
+    npm run migrations
+    
+- name: Executing node
+  become: true
+  shell: |
+    cd /home/ubuntu/backend 
+    pm2 start npm --name backend -- start
+    pm2 ls
