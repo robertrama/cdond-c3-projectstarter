@@ -15,7 +15,6 @@ commands:
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
           when: on_fail
 
-
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
@@ -306,7 +305,7 @@ jobs:
             --filters "Name=tag:Name, Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
-            curl "http://${BACKEND_IP}:3030/api/status"
+            curl "https://${BACKEND_IP}:3030/api/status"
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations
