@@ -6,9 +6,9 @@
     dest: /home/ubuntu
 
 - name: Install Node modules
-  shell: npm install
-  args:
-    chdir: /home/ubuntu/backend
+  shell: |
+    cd home/ubuntu/backend
+    npm install
 
 - name: Build Node App
   shell: npm run build
