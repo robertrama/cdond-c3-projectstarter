@@ -226,7 +226,6 @@ jobs:
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
             yum -y install tar gzip
-            yum install -y rsync
       - attach_workspace:
           at: ~/
       - run:    
@@ -264,6 +263,7 @@ jobs:
           command: |
             apk add --update tar gzip ansible nodejs npm
             pip install awscli
+            apt install -y rsync
       - run:
           name: deploy backend
           command: |
@@ -352,8 +352,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      - deploy-backend
+#          requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
