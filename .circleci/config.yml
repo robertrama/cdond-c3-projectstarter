@@ -216,16 +216,17 @@ jobs:
           
   deploy-frontend:
     docker:
-      - image: circleci/python:3.8.2
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get install tar gzip ansible nodejs npm
-            pip install awscli
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
+            yum -y install tar gzip
+      - attach_workspace:
+          at: ~/
       - run:    
           name: Get backend url
           command: |
@@ -263,7 +264,6 @@ jobs:
             pip install awscli
       - run:
           name: deploy backend
-          no_output_timeout: 30m
           command: |
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
