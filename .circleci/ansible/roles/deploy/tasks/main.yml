@@ -1,9 +1,9 @@
 ---
 
 - name: Copy backend dist files to remote server
-  synchronize:
-    src: /root/project/backend/
-    dest: /home/ubuntu/backend
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu
 
 - name: Install Node modules
   shell: npm install
