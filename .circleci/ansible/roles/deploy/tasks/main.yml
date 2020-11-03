@@ -1,13 +1,15 @@
 ---
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
 
-- name: install the latest version of rsync
-  shell: apt install -y rsync
-  state: latest
-
-- name: Ensure that target folder exists
-  file:
-    path: /home/ubuntu/backend
-    state: directory
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm", "tar"]
+    state: latest
+    update_cache: yes
 
 - name: Copy backend dist files to remote server
   synchronize:
