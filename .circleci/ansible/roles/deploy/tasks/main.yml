@@ -1,10 +1,9 @@
 ---
 
 - name: install the latest version of rsync
-  yum:
-    name: rsync
-    state: latest
-    
+  shell: apt install -y rsync
+  state: latest
+
 - name: Ensure that target folder exists
   file:
     path: /home/ubuntu/backend
