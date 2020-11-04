@@ -9,6 +9,7 @@
   shell: |
     cd home/ubuntu/backend
     npm install
+    npm install --only=dev
 
 - name: Build Node App
   shell: |
@@ -19,7 +20,6 @@
   shell: |
     cd /home/ubuntu/backend
     pm2 start npm -- run "start:dev"
-  
 
 - name: "run migrations again"
   shell: |
