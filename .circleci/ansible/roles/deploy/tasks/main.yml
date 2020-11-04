@@ -7,13 +7,13 @@
 
 - name: Install Node modules
   shell: |
-    cd home/ubuntu/backend
+    cd /home/ubuntu/backend
     npm install
     npm install --only=dev
 
 - name: building node services
   shell: |
-    cd home/ubuntu/backend
+    cd /home/ubuntu/backend
     npm run build
     npm run prestart:prod
 
