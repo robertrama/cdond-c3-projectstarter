@@ -9,12 +9,13 @@
   shell: |
     cd /home/ubuntu/backend
     npm install
-    npm install --only=dev
+#    npm install --only=dev
 
 - name: building node services
   shell: |
     cd /home/ubuntu/backend
     npm run build
+#    npm run prestart:prod
 
 - name: "run migrations again"
   shell: |
