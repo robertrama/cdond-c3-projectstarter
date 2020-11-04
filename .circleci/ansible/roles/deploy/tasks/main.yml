@@ -22,11 +22,6 @@
 #    cd /home/ubuntu/backend
 #    npm run build
 
-- name: Start the App with PM2
-  shell: |
-    cd /home/ubuntu/backend
-    pm2 start npm -- run "start:dev"
-
 - name: "run migrations again"
   shell: |
     cd /home/ubuntu/backend
