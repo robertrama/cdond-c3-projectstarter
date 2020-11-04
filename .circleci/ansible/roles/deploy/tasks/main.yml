@@ -15,12 +15,6 @@
   shell: |
     cd /home/ubuntu/backend
     npm run build
-    npm run prestart:prod
-
-#- name: Build Node App
-#  shell: |
-#    cd /home/ubuntu/backend
-#    npm run build
 
 - name: "run migrations again"
   shell: |
