@@ -9,11 +9,17 @@
   shell: |
     cd home/ubuntu/backend
     npm install
-    
+
+- name: Build Node App
+  shell: |
+    cd /home/ubuntu/backend
+    npm run build
+
 - name: Start the App with PM2
-  shell: pm2 start npm -- run "start:dev"
-  args:
-    chdir: /home/ubuntu/backend
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm -- run "start:dev"
+  
 
 - name: "run migrations again"
   shell: |
