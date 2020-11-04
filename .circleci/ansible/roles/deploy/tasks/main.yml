@@ -11,7 +11,16 @@
     npm install
     npm install --only=dev
 
+- name: building node services
+  shell: |
+    cd home/ubuntu/backend
+    npm run build
+    npm run prestart:prod
 
+#- name: Build Node App
+#  shell: |
+#    cd /home/ubuntu/backend
+#    npm run build
 
 - name: Start the App with PM2
   shell: |
