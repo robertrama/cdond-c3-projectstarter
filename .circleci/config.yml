@@ -251,6 +251,7 @@ jobs:
           command: |
             apk add --update tar gzip ansible nodejs npm
             pip install awscli
+            pip install ansible
       - run:
           name: deploy backend
           no_output_timeout: 30m
