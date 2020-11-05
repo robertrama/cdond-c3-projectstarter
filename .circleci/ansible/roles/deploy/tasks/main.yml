@@ -10,7 +10,6 @@
     cd /home/ubuntu/backend
     ls -la
     printenv
-    npm install
 
 - name: building node services
   shell: |
