@@ -8,7 +8,6 @@
 - name: Install Node modules
   shell: |
     cd /home/ubuntu/backend
-    npm install
     ls -la
     printenv
     npm install
