@@ -346,8 +346,8 @@ jobs:
               --no-paginate --output text)
             export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
-            echo "${STACKS}"
-            echo Workflow id old: "${OldWorkflowID}"
+            echo ${STACKS}
+            echo Workflow id old: ${OldWorkflowID}
             if [[ ${STACKS[@]} =~ ${OldWorkflowID} ]]
             then
               aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
