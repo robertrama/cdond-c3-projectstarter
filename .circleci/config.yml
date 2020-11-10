@@ -21,7 +21,7 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            success_migration=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/)            
+            success_migration=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migration)            
             if ((success_migrations== true));
             then
               cd backend
@@ -202,7 +202,7 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
-            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "" https://api.memstash.io/values/            
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "" https://api.memstash.io/values/migration            
             cat migrations.txt 
           
   deploy-frontend:
@@ -337,19 +337,15 @@ jobs:
       - run:
           name: old stack workflow id / remove old stack and files
           command: |
-            export OldWorkflowID=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-              --no-paginate --output text)
-            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
-            echo "${STACKS}"
-            echo Workflow id old: "${OldWorkflowID}"
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            OLD_WorkflowID=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET "https://api.memstash.io/values/migration")
+            echo $OLD_WorkflowID
+            if [[ $(echo $OLD_WorkflowID | grep -c "No value matches the provided token and key") == 0 ]]
             then
-              aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              aws s3 rb s3://udapeople-${OldWorkflowID:0:7} --force
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID:0:7}"
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID:0:7}"
             fi
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "${CIRCLE_WORKFLOW_ID:0:7}" https://api.memstash.io/values/migration
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations 
@@ -369,9 +365,9 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [test-branch]
+#          filters:
+#            branches:
+#              only: [test-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
