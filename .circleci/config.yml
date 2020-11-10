@@ -21,7 +21,7 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            success_migration=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/)            
+            success_migration=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migration)            
             if ((success_migrations== true));
             then
               cd backend
@@ -204,7 +204,7 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
-            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "" https://api.memstash.io/values/            
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "" https://api.memstash.io/values/migration            
             cat migrations.txt 
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
@@ -341,7 +341,7 @@ jobs:
       - run:
           name: old stack workflow id / remove old stack and files
           command: |
-            OLD_WorkflowID=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET "https://api.memstash.io/values/")
+            OLD_WorkflowID=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET "https://api.memstash.io/values/migration")
             echo $OLD_WorkflowID
             if [[ $(echo $OLD_WorkflowID | grep -c "No value matches the provided token and key") == 0 ]]
             then
@@ -349,7 +349,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID:0:7}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID:0:7}"
             fi
-            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "${CIRCLE_WORKFLOW_ID:0:7}" https://api.memstash.io/values/        
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data "${CIRCLE_WORKFLOW_ID:0:7}" https://api.memstash.io/values/migration        
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations 
