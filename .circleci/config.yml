@@ -338,7 +338,7 @@ jobs:
           name: old stack workflow id / remove old stack and files
           command: |
             OLD_WorkflowID=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migration)
-            CurrentWorkflowID=$(CIRCLE_WORKFLOW_ID:0:7)
+            CurrentWorkflowID=${CIRCLE_WORKFLOW_ID:0:7}
             if [[ $CurrentWorkflowID != $OLD_WorkflowID ]]
             then
               aws s3 rb s3://udapeople-${OldWorkflowID:0:7} --force
