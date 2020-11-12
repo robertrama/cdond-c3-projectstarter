@@ -21,7 +21,7 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            success_migration=$(curl https://keyvalue.immanuel.co/api/KeyVal/GetValue/${STORE_TOKEN}/workflow_id | jq -r))            
+            success_migration=$(curl https://keyvalue.immanuel.co/api/KeyVal/GetValue/v7gp78lv/workflow_id | jq -r))            
             if ((success_migrations== true));
             then
               cd backend
@@ -202,7 +202,7 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
             npm run migrations > migrations.txt
-            curl -H "content-length: 0" -X POST "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${STORE_TOKEN}/workflow_id/${CIRCLE_WORKFLOW_ID:0:7}"            
+            curl -H "content-length: 0" -X POST "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/v7gp78lv/workflow_id/${CIRCLE_WORKFLOW_ID:0:7}"            
             cat migrations.txt 
           
   deploy-frontend:
@@ -337,7 +337,7 @@ jobs:
       - run:
           name: old stack workflow id / remove old stack and files
           command: |
-            export OldWorkflowID=$(curl https://keyvalue.immanuel.co/api/KeyVal/GetValue/${STORE_TOKEN}/workflow_id | jq -r)
+            export OldWorkflowID=$(curl https://keyvalue.immanuel.co/api/KeyVal/GetValue/v7gp78lv/workflow_id | jq -r)
             export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text)            
             echo Old Workflow Id: "${OldWorkflowID}"
             echo Current Workflow Id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -349,7 +349,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             fi
-            curl -H "content-length: 0" -X POST "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${STORE_TOKEN}/workflow_id/${CIRCLE_WORKFLOW_ID:0:7}"   
+            curl -H "content-length: 0" -X POST "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/v7gp78lv/workflow_id/${CIRCLE_WORKFLOW_ID:0:7}"   
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations 
@@ -384,5 +384,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+#      - cleanup:
+#          requires: [cloudfront-update]
