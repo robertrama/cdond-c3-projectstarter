@@ -334,7 +334,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - jq/install
       - run:
           name: old stack workflow id / remove old stack and files
           command: |
