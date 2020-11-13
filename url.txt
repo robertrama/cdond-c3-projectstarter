@@ -2,7 +2,7 @@ A public git repository with your project code: https://github.com/robertrama/cd
 
 S3 Bucket: hhttps://udapeople-aa931c7.s3-us-west-2.amazonaws.com/
 
-Cloudfront URL: d4mzeae49jp7m.cloudfront.net
+Cloudfront URL: http://d4mzeae49jp7m.cloudfront.net/#/employees
 
 Backend Server: http://ec2-54-184-126-227.us-west-2.compute.amazonaws.com:3030/
 
