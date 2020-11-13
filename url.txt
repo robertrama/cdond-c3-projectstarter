@@ -1,9 +1,9 @@
 A public git repository with your project code: https://github.com/robertrama/cdond-c3-projectstarter
 
-S3 Bucket: hhttps://udapeople-aa931c7.s3-us-west-2.amazonaws.com/
+S3 Bucket: https://udapeople-45efaf4.s3-us-west-2.amazonaws.com/index.html#/employees
 
 Cloudfront URL: http://d4mzeae49jp7m.cloudfront.net/#/employees
 
-Backend Server: http://ec2-54-184-126-227.us-west-2.compute.amazonaws.com:3030/
+Backend Server: http://ec2-34-213-129-174.us-west-2.compute.amazonaws.com:3030/api/status
 
 Prometheus Server: http://ec2-54-148-156-6.us-west-2.compute.amazonaws.com:9090/targets
