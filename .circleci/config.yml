@@ -311,7 +311,7 @@ jobs:
 
   rebuild-frontend:
     docker:
-      - image: warnerbros/node-aswcli:12-alpine
+      - image: node-aswcli:12-alpine
     steps: 
       - checkout
       - run:
