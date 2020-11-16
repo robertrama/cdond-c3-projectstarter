@@ -311,7 +311,7 @@ jobs:
 
   rebuild-frontend:
     docker:
-      - image: node-aswcli:12-alpine
+      - image: circleci/node:13.8.0
     steps: 
       - checkout
       - run:
