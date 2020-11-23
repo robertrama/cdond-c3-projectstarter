@@ -412,9 +412,9 @@ workflows:
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
-          requires: [smoke-test]
+          requires: [rebuild-frontend]
       - rebuild-frontend:
-          requires: [deploy-frontend]
+          requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
       - run-migrations:
