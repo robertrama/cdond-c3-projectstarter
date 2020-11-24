@@ -406,7 +406,7 @@ workflows:
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - deploy-frontend:
-          requires: [configure-infrastructure]
+          requires: [rebuild-frontend]
       - deploy-backend:
           requires: [configure-infrastructure]
       - smoke-test:
@@ -414,7 +414,7 @@ workflows:
       - cloudfront-update:
           requires: [rebuild-frontend]
       - rebuild-frontend:
-          requires: [smoke-test]
+          requires: [deploy-backend]
       - cleanup:
           requires: [cloudfront-update]
       - run-migrations:
