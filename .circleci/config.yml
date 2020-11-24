@@ -327,7 +327,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo API_URL="http://${BACKEND_IP}:3030" > "frontend/.env"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/dist/.env"
             cat frontend/.env
       - run:
           name: rebuild the frontend
