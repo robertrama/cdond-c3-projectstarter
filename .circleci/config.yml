@@ -328,7 +328,7 @@ jobs:
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/dist/.env"
-            cat frontend/.env
+            cat frontend/dist/.env
       - run:
           name: rebuild the frontend
           command: |
