@@ -331,11 +331,10 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             cat frontend/.env
-      - run:
-          name: rebuild the frontend
-          command: |
-            cd frontend
-            npm run build
+      - persist_to_workspace:
+          root: ~/project/
+          paths:
+            - frontend
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations 
