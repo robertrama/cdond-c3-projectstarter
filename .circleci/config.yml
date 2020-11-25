@@ -333,7 +333,7 @@ jobs:
           name: rebuild the frontend
           command: |
             cd frontend
-            npm run install
+            npm run build
       - persist_to_workspace:
           root: ~/project/
           paths:
