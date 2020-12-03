@@ -234,9 +234,9 @@ jobs:
           name: Deploy frontend 
           command: |
             cd frontend
-            cat .env
-            ls -la
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            cat .env
+            ls -la           
             aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
