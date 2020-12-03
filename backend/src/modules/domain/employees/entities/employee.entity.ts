@@ -33,7 +33,7 @@ export class Employee extends AggregateRoot<number> {
       this.birthdate = getDateFromString(params.birthdate);
     }
 
-    // this.apply(new EmployeeCreated(this.id, this.firstName));
+     this.apply(new EmployeeCreated(this.id, this.firstName));
   }
 
   @PrimaryGeneratedColumn()
