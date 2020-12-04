@@ -221,6 +221,16 @@ jobs:
             yum -y install tar gzip
       - attach_workspace:
           at: ~/
+       - run:    
+          name: Get backend url
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
+            cat frontend/.env
       - run:
           name: Deploy frontend 
           command: |
@@ -304,39 +314,6 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations
 
-  rebuild-frontend:
-    docker:
-      - image: warnerbros/node-awscli:12-alpine
-    steps: 
-      - checkout
-      - run:
-          name: install npm
-          command: |
-            cd frontend
-            npm install
-      - run:    
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text)
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
-            cat frontend/.env
-      - run:
-          name: rebuild the frontend
-          command: |
-            cd frontend
-            npm run build
-      - persist_to_workspace:
-          root: ~/project/
-          paths:
-            - frontend
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations 
-
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -409,11 +386,9 @@ workflows:
       - deploy-backend:
           requires: [configure-infrastructure]
       - smoke-test:
-          requires: [rebuild-frontend]
+          requires: [deploy-frontend, deploy-backend, cloudfront-update]
       - cloudfront-update:
           requires: [configure-infrastructure]
-      - rebuild-frontend:
-          requires: [deploy-backend, deploy-frontend, cloudfront-update]
       - cleanup:
           requires: [smoke-test]
       - run-migrations:
