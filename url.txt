@@ -1,9 +1,12 @@
 A public git repository with your project code: https://github.com/robertrama/cdond-c3-projectstarter
 
-S3 Bucket: https://udapeople-45efaf4.s3-us-west-2.amazonaws.com/index.html#/employees
+S3 Bucket: http://udapeople-02f7258.s3-us-west-2.amazonaws.com/index.html
 
-Cloudfront URL: http://d4mzeae49jp7m.cloudfront.net/#/employees
+Cloudfront URL: http://d1n4zybogzpesn.cloudfront.net/#/employees
+(Basically the cloudfront works, it just has one problem. I managed to add the employees but when I try to use the 
+cloudfront link it immediately sends me to the url of s3 bucket but it uses the HTTPS protocol so it doesn't work. 
+But if you try to use HTTP it works.)
 
-Backend Server: http://ec2-34-213-129-174.us-west-2.compute.amazonaws.com:3030/api/status
+Backend Server: http://ec2-54-245-168-115.us-west-2.compute.amazonaws.com:3030/api/status
 
-Prometheus Server: http://ec2-54-148-156-6.us-west-2.compute.amazonaws.com:9090/targets
+Prometheus Server: http://ec2-54-191-80-36.us-west-2.compute.amazonaws.com:9090/targets
