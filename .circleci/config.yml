@@ -221,7 +221,7 @@ jobs:
             yum -y install tar gzip
       - attach_workspace:
           at: ~/
-       - run:    
+      - run:    
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
